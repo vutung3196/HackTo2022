@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
+import Places from "./Places";
 import axios from "axios";
 import { useEffect } from "react";
 
@@ -35,21 +36,26 @@ export default function Map() {
   const onUnmount = useCallback(function callback(map) {
     setMap(null);
   }, []);
+
   console.log(map);
   return (
     <div>
       <button onClick={handleCoord}>get location</button>
+
+      <Places />
+
       <GoogleMap
         mapContainerStyle={containerStyle}
         zoom={8}
         onLoad={onLoad}
         onUnmount={onUnmount}
+        center={coord}
       >
         {/* {markers &&
           markers.map((location) => (
             <Marker key={location.id} position={location.latLng} />
           ))} */}
-        <Marker position={coord} />
+        <Marker position={{ lat: 43.6500455, lng: -79.3911321 }} />
       </GoogleMap>
     </div>
   );

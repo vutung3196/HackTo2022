@@ -4,7 +4,12 @@ import usePlacesAutocomplete, {
 } from "use-places-autocomplete";
 import useOnclickOutside from "react-cool-onclickoutside";
 
-export default function Places({ getUserLocation, setCoord }) {
+export default function Places({
+  getUserLocation,
+  setCoord,
+  placeholder,
+  setMarker,
+}) {
   const {
     ready,
     value,
@@ -29,7 +34,6 @@ export default function Places({ getUserLocation, setCoord }) {
       // by setting the second parameter to "false"
       setValue(description, false);
       clearSuggestions();
-
       // Get latitude and longitude via utility functions
       getGeocode({ address: description }).then((results) => {
         const { lat, lng } = getLatLng(results[0]);
@@ -37,6 +41,7 @@ export default function Places({ getUserLocation, setCoord }) {
           lat: lat,
           lng: lng,
         });
+        setMarker(getLatLng(results[0]));
       });
     };
   const renderSuggestions = () =>
@@ -59,7 +64,7 @@ export default function Places({ getUserLocation, setCoord }) {
         value={value}
         onChange={handleInput}
         disabled={!ready}
-        placeholder="Where are you going?"
+        placeholder={placeholder}
       />
       {/* We can use the "status" to decide whether we should display the dropdown or not */}
       {status === "OK" && <ul>{renderSuggestions()}</ul>}

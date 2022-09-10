@@ -1,7 +1,10 @@
 import { useState, useCallback } from "react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 
+import DataService from "../services/data.service.js";
+
 import Places from "./Places";
+import { useEffect } from "react";
 const containerStyle = {
   width: "100vw",
   height: "100vh",
@@ -10,14 +13,36 @@ const containerStyle = {
 export default function Map() {
   const [map, setMap] = useState(null);
   const [coord, setCoord] = useState({ lat: 30, lng: -70 });
-  const [markers, setMarkers] = useState([]);
+  const [currentMarker, setCurrentMarker] = useState(null);
+  const [targetMarker, setTargetMarker] = useState(null);
   const [fetching, setFetching] = useState(false);
+
+  const [blackPoint, setBlackPoint] = useState([]);
+
+  const showLocationData = () => {
+    DataService.getData()
+      .then((response) => {
+        console.log("============Location is================");
+        setBlackPoint(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  useEffect(() => {
+    showLocationData();
+  }, []);
 
   const getUserLocation = async () => {
     if (navigator.geolocation) {
       setFetching(true);
       navigator.geolocation.getCurrentPosition((position) => {
         setCoord({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+        setCurrentMarker({
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
@@ -40,22 +65,49 @@ export default function Map() {
     setMap(null);
   }, []);
 
+  console.log(blackPoint);
+
   return (
     <div>
-      <Places getUserLocation={getUserLocation} setCoord={setCoord} />
+      <Places
+        getUserLocation={getUserLocation}
+        setCoord={setCoord}
+        placeholder={"Your Location"}
+        setMarker={setCurrentMarker}
+      />
+      <Places
+        getUserLocation={getUserLocation}
+        setCoord={setCoord}
+        placeholder={"Choose destination"}
+        setMarker={setTargetMarker}
+      />
       <button onClick={getUserLocation}>get location</button>
       <GoogleMap
         mapContainerStyle={containerStyle}
-        zoom={12}
+        zoom={15}
         onLoad={onLoad}
         center={coord}
         onUnmount={onUnmount}
       >
-        {markers &&
-          markers.map((location) => (
-            <Marker key={location.id} position={location.latLng} />
+        {currentMarker && <Marker position={currentMarker} />}
+        {targetMarker && <Marker position={targetMarker} />}
+        {blackPoint &&
+          blackPoint.map((loca, index) => (
+            <>
+              <div>{loca.latitude}</div>
+              <Marker
+                key={index}
+                position={{ lng: loca.latitude, lat: loca.longitude }}
+              />
+            </>
           ))}
       </GoogleMap>
+      {blackPoint &&
+        blackPoint.map((loca, index) => (
+          <>
+            <div>{loca.latitude}</div>
+          </>
+        ))}
     </div>
   );
 }

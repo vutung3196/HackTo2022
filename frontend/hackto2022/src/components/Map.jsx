@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { GoogleMap } from "@react-google-maps/api";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 import axios from "axios";
 import { useEffect } from "react";
 
@@ -10,7 +10,7 @@ const containerStyle = {
 
 export default function Map() {
   const [map, setMap] = useState(null);
-  const [coord, setCoord] = useState({ lat: 40, lng: -80 });
+  const [coord, setCoord] = useState({ lat: 43.6500455, lng: -79.3911321 });
   const handleCoord = () => {
     axios
       .post(
@@ -38,6 +38,7 @@ export default function Map() {
   console.log(map);
   return (
     <div>
+      <button onClick={handleCoord}>get location</button>
       <GoogleMap
         mapContainerStyle={containerStyle}
         zoom={8}
@@ -48,6 +49,7 @@ export default function Map() {
           markers.map((location) => (
             <Marker key={location.id} position={location.latLng} />
           ))} */}
+        <Marker position={coord} />
       </GoogleMap>
     </div>
   );

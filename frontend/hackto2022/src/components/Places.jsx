@@ -4,7 +4,7 @@ import usePlacesAutocomplete, {
 } from "use-places-autocomplete";
 import useOnclickOutside from "react-cool-onclickoutside";
 
-export default function Places({ getUserLocation }) {
+export default function Places({ getUserLocation, setCoord }) {
   const {
     ready,
     value,
@@ -33,7 +33,10 @@ export default function Places({ getUserLocation }) {
       // Get latitude and longitude via utility functions
       getGeocode({ address: description }).then((results) => {
         const { lat, lng } = getLatLng(results[0]);
-        console.log("📍 Coordinates: ", { lat, lng });
+        setCoord({
+          lat: lat,
+          lng: lng,
+        });
       });
     };
   const renderSuggestions = () =>
@@ -49,8 +52,7 @@ export default function Places({ getUserLocation }) {
         </li>
       );
     });
-  console.log("ready", value);
-  console.log("suggestions", usePlacesAutocomplete());
+
   return (
     <div ref={ref}>
       <input

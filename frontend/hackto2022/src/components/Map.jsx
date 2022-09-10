@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { GoogleMap } from "@react-google-maps/api";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 
 import Places from "./Places";
 const containerStyle = {
@@ -10,6 +10,7 @@ const containerStyle = {
 export default function Map() {
   const [map, setMap] = useState(null);
   const [coord, setCoord] = useState({ lat: 30, lng: -70 });
+  const [markers, setMarkers] = useState([]);
   const [fetching, setFetching] = useState(false);
 
   const getUserLocation = async () => {
@@ -41,7 +42,7 @@ export default function Map() {
 
   return (
     <div>
-      <Places getUserLocatio={getUserLocation} />
+      <Places getUserLocation={getUserLocation} setCoord={setCoord} />
       <button onClick={getUserLocation}>get location</button>
       <GoogleMap
         mapContainerStyle={containerStyle}
@@ -50,10 +51,10 @@ export default function Map() {
         center={coord}
         onUnmount={onUnmount}
       >
-        {/* {markers &&
+        {markers &&
           markers.map((location) => (
             <Marker key={location.id} position={location.latLng} />
-          ))} */}
+          ))}
       </GoogleMap>
     </div>
   );

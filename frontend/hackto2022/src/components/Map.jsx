@@ -1,10 +1,9 @@
 import { useState, useCallback } from "react";
 import { GoogleMap } from "@react-google-maps/api";
-import Places from "./Places";
-const center = {
-  lat: -3.745,
-  lng: -38.523,
-};
+
+import axios from "axios";
+import { useEffect } from "react";
+
 const containerStyle = {
   width: "100vw",
   height: "100vh",
@@ -12,6 +11,21 @@ const containerStyle = {
 
 export default function Map() {
   const [map, setMap] = useState(null);
+  const [coord, setCoord] = useState({ lat: 40, lng: -80 });
+  const handleCoord = () => {
+    axios
+      .post(
+        "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyCECygLsxYj2gL2V6h-mF5JpBkADhhyRPY"
+      )
+      .then(function (response) {
+        setCoord(response.data.location);
+        console.log(response.data.location);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+  const center = { lat: coord.lat, lng: coord.lng };
 
   const onLoad = useCallback(function callback(map) {
     const bounds = new window.google.maps.LatLngBounds(center);
@@ -29,7 +43,7 @@ export default function Map() {
       <Places />
       <GoogleMap
         mapContainerStyle={containerStyle}
-        zoom={12}
+        zoom={8}
         onLoad={onLoad}
         onUnmount={onUnmount}
       >

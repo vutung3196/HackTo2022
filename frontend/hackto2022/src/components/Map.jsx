@@ -1,9 +1,7 @@
 import { useState, useCallback } from "react";
-import { GoogleMap, Marker } from "@react-google-maps/api";
-import Places from "./Places";
-import axios from "axios";
-import { useEffect } from "react";
+import { GoogleMap } from "@react-google-maps/api";
 
+import Places from "./Places";
 const containerStyle = {
   width: "100vw",
   height: "100vh",
@@ -11,24 +9,28 @@ const containerStyle = {
 
 export default function Map() {
   const [map, setMap] = useState(null);
-  const [coord, setCoord] = useState({ lat: 43.6500455, lng: -79.3911321 });
-  const handleCoord = () => {
-    axios
-      .post(
-        "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyCECygLsxYj2gL2V6h-mF5JpBkADhhyRPY"
-      )
-      .then(function (response) {
-        setCoord(response.data.location);
-        console.log(response.data.location);
-      })
-      .catch(function (error) {
-        console.log(error);
+  const [coord, setCoord] = useState({ lat: 30, lng: -70 });
+  const [fetching, setFetching] = useState(false);
+
+  const getUserLocation = async () => {
+    if (navigator.geolocation) {
+      setFetching(true);
+      navigator.geolocation.getCurrentPosition((position) => {
+        setCoord({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
       });
+      setTimeout(() => {
+        setFetching(false);
+      }, 2000);
+    } else {
+      console.log("Geolocation is not supported by your browser");
+    }
   };
-  const center = { lat: coord.lat, lng: coord.lng };
 
   const onLoad = useCallback(function callback(map) {
-    const bounds = new window.google.maps.LatLngBounds(center);
+    const bounds = new window.google.maps.LatLngBounds(coord);
     map.fitBounds(bounds);
     setMap(map);
   }, []);
@@ -37,25 +39,21 @@ export default function Map() {
     setMap(null);
   }, []);
 
-  console.log(map);
   return (
     <div>
-      <button onClick={handleCoord}>get location</button>
-
-      <Places />
-
+      <Places getUserLocatio={getUserLocation} />
+      <button onClick={getUserLocation}>get location</button>
       <GoogleMap
         mapContainerStyle={containerStyle}
-        zoom={8}
+        zoom={12}
         onLoad={onLoad}
-        onUnmount={onUnmount}
         center={coord}
+        onUnmount={onUnmount}
       >
         {/* {markers &&
           markers.map((location) => (
             <Marker key={location.id} position={location.latLng} />
           ))} */}
-        <Marker position={{ lat: 43.6500455, lng: -79.3911321 }} />
       </GoogleMap>
     </div>
   );

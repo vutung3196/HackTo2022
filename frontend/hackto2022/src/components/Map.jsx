@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 const containerStyle = {
   width: "100vw",
-  height: "100vh",
+  height: "91.5vh",
 };
 
 export default function Map() {
@@ -68,7 +68,7 @@ export default function Map() {
 
   return (
     <div>
-      <MenuIcon onClick={() => setMenuOpen(!menuOpen)} />
+      {/* <MenuIcon onClick={() => setMenuOpen(!menuOpen)} /> */}
 
       <GoogleMap
         mapContainerStyle={containerStyle}
@@ -82,6 +82,7 @@ export default function Map() {
           setCoord={setCoord}
           setCurrentMarker={setCurrentMarker}
           setTargetMarker={setTargetMarker}
+          setMenuOpen={setMenuOpen}
           menuOpen={menuOpen}
         />
         {currentMarker && <Marker position={currentMarker} />}

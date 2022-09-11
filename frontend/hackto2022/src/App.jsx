@@ -3,7 +3,7 @@ import Home from "./components/Home";
 function App() {
   return (
     <>
-      <div>test</div>
+      <h3>Bicycling App</h3>
       <Home />
       <div>test</div>
     </>

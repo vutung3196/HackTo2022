@@ -12,7 +12,12 @@
   align-items: left;
   // justify-content: center;
   transition: all 1s ease;
-
+  .menuicon {
+    position: relative;
+    left: -40px;
+    bottom: -16px;
+    z-index: 100;
+  }
   &.active {
     right: 0;
     position: fixed;

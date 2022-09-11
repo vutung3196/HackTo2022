@@ -17,7 +17,10 @@
     right: 0;
     position: fixed;
   }
-
+  .location {
+    display: flex;
+    align-items: center;
+  }
   ul {
     background-color: white;
     margin: 0;

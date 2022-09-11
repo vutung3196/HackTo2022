@@ -12,19 +12,21 @@ export default function Menu({
 }) {
   return (
     <div className={"menu " + (menuOpen && "active")}>
-      <Places
-        getUserLocation={getUserLocation}
-        setCoord={setCoord}
-        placeholder={"Your Location"}
-        setMarker={setCurrentMarker}
-      />
+      <div className="location">
+        <Places
+          getUserLocation={getUserLocation}
+          setCoord={setCoord}
+          placeholder={"Your Location"}
+          setMarker={setCurrentMarker}
+        />
+        <LocationSearchingIcon onClick={getUserLocation} />
+      </div>
       <Places
         getUserLocation={getUserLocation}
         setCoord={setCoord}
         placeholder={"Choose destination"}
         setMarker={setTargetMarker}
       />
-      <LocationSearchingIcon onClick={getUserLocation} />
     </div>
   );
 }

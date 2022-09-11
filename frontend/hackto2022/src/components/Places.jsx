@@ -66,7 +66,7 @@ export default function Places({
         disabled={!ready}
         placeholder={placeholder}
         style={{
-          width: "300px",
+          width: "250px",
           height: "3rem",
           background: "transparent",
           borderColor: "transparent",

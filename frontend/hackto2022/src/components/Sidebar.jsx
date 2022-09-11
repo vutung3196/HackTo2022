@@ -11,16 +11,24 @@ export default function Menu({
   setTargetMarker,
   menuOpen,
   setMenuOpen,
+  showPointData,
+  setZoom,
 }) {
   return (
     <div className={"menu " + (menuOpen && "active")}>
       <MenuIcon onClick={() => setMenuOpen(!menuOpen)} className="menuicon" />
+
+      <button className="button-3 go " onClick={showPointData}>
+        GO
+      </button>
+
       <div className="location">
         <Places
           getUserLocation={getUserLocation}
           setCoord={setCoord}
           placeholder={"Your Location"}
           setMarker={setCurrentMarker}
+          setZoom={setZoom}
         />
         <LocationSearchingIcon onClick={getUserLocation} />
       </div>
@@ -29,6 +37,7 @@ export default function Menu({
         setCoord={setCoord}
         placeholder={"Choose destination"}
         setMarker={setTargetMarker}
+        setZoom={setZoom}
       />
     </div>
   );

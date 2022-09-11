@@ -9,6 +9,7 @@ export default function Places({
   setCoord,
   placeholder,
   setMarker,
+  setZoom,
 }) {
   const {
     ready,
@@ -42,6 +43,7 @@ export default function Places({
           lng: lng,
         });
         setMarker(getLatLng(results[0]));
+        setZoom(20);
       });
     };
   const renderSuggestions = () =>

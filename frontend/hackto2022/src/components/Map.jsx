@@ -2,9 +2,8 @@ import { useState, useCallback } from "react";
 import { GoogleMap, Marker, BicyclingLayerF } from "@react-google-maps/api";
 import Sidebar from "./Sidebar";
 import DataService from "../services/data.service.js";
-
-import Places from "./Places";
 import { useEffect } from "react";
+import MenuIcon from "@mui/icons-material/Menu";
 const containerStyle = {
   width: "100vw",
   height: "100vh",
@@ -16,7 +15,7 @@ export default function Map() {
   const [currentMarker, setCurrentMarker] = useState(null);
   const [targetMarker, setTargetMarker] = useState(null);
   const [fetching, setFetching] = useState(false);
-
+  const [menuOpen, setMenuOpen] = useState(false);
   const [blackPoint, setBlackPoint] = useState([]);
 
   const showLocationData = () => {
@@ -69,9 +68,11 @@ export default function Map() {
 
   return (
     <div>
+      <MenuIcon onClick={() => setMenuOpen(!menuOpen)} />
+
       <GoogleMap
         mapContainerStyle={containerStyle}
-        zoom={15}
+        zoom={10}
         onLoad={onLoad}
         center={coord}
         onUnmount={onUnmount}
@@ -81,6 +82,7 @@ export default function Map() {
           setCoord={setCoord}
           setCurrentMarker={setCurrentMarker}
           setTargetMarker={setTargetMarker}
+          menuOpen={menuOpen}
         />
         {currentMarker && <Marker position={currentMarker} />}
         {targetMarker && <Marker position={targetMarker} />}

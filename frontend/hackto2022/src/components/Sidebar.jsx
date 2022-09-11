@@ -1,13 +1,15 @@
 import "./Sidebar.scss";
 import { useState } from "react";
+import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
 import Places from "./Places";
 export default function Menu({
   getUserLocation,
   setCoord,
   setCurrentMarker,
   setTargetMarker,
+  menuOpen,
+  setMenuOpen,
 }) {
-  const [menuOpen, setMenuOpen] = useState(true);
   return (
     <div className={"menu " + (menuOpen && "active")}>
       <Places
@@ -22,7 +24,7 @@ export default function Menu({
         placeholder={"Choose destination"}
         setMarker={setTargetMarker}
       />
-      <button onClick={getUserLocation}>current location</button>
+      <LocationSearchingIcon onClick={getUserLocation} />
     </div>
   );
 }

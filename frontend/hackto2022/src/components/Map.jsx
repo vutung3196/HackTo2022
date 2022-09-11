@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { GoogleMap, Marker, BicyclingLayerF } from "@react-google-maps/api";
-
+import Sidebar from "./Sidebar";
 import DataService from "../services/data.service.js";
 
 import Places from "./Places";
@@ -69,19 +69,6 @@ export default function Map() {
 
   return (
     <div>
-      <Places
-        getUserLocation={getUserLocation}
-        setCoord={setCoord}
-        placeholder={"Your Location"}
-        setMarker={setCurrentMarker}
-      />
-      <Places
-        getUserLocation={getUserLocation}
-        setCoord={setCoord}
-        placeholder={"Choose destination"}
-        setMarker={setTargetMarker}
-      />
-      <button onClick={getUserLocation}>get location</button>
       <GoogleMap
         mapContainerStyle={containerStyle}
         zoom={15}
@@ -89,6 +76,12 @@ export default function Map() {
         center={coord}
         onUnmount={onUnmount}
       >
+        <Sidebar
+          getUserLocation={getUserLocation}
+          setCoord={setCoord}
+          setCurrentMarker={setCurrentMarker}
+          setTargetMarker={setTargetMarker}
+        />
         {currentMarker && <Marker position={currentMarker} />}
         {targetMarker && <Marker position={targetMarker} />}
         {blackPoint &&

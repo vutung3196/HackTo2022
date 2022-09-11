@@ -65,6 +65,7 @@ export default function Places({
         onChange={handleInput}
         disabled={!ready}
         placeholder={placeholder}
+        style={{ width: "300px" }}
       />
       {/* We can use the "status" to decide whether we should display the dropdown or not */}
       {status === "OK" && <ul>{renderSuggestions()}</ul>}

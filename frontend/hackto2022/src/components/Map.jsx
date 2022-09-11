@@ -1,17 +1,28 @@
 import { useState, useCallback } from "react";
-import { GoogleMap } from "@react-google-maps/api";
-
+import { GoogleMap, Marker, BicyclingLayerF } from "@react-google-maps/api";
+import axios from "axios";
 import Places from "./Places";
+import Sidebar from "./Sidebar";
+import { useEffect } from "react";
+import { InfoWindow } from "@react-google-maps/api";
 const containerStyle = {
   width: "100vw",
   height: "100vh",
 };
-
 export default function Map() {
   const [map, setMap] = useState(null);
   const [coord, setCoord] = useState({ lat: 30, lng: -70 });
   const [fetching, setFetching] = useState(false);
 
+  useEffect(() => {
+    axios
+      .get(
+        "https://annaostapenko.github.io/HackTo2022-BackEnd/data/fatal_geo.json"
+      )
+      .then((response) => {
+        console.log(response);
+      });
+  }, []);
   const getUserLocation = async () => {
     if (navigator.geolocation) {
       setFetching(true);
@@ -41,7 +52,9 @@ export default function Map() {
 
   return (
     <div>
-      <Places getUserLocatio={getUserLocation} />
+      <Sidebar getUserLocation={getUserLocation} setCoord={setCoord} />
+      {/* <Places getUserLocation={getUserLocation} setCoord={setCoord} /> */}
+      {/* <Sidebar /> */}
       <button onClick={getUserLocation}>get location</button>
       <GoogleMap
         mapContainerStyle={containerStyle}
@@ -54,6 +67,8 @@ export default function Map() {
           markers.map((location) => (
             <Marker key={location.id} position={location.latLng} />
           ))} */}
+        <Marker position={coord} />
+        <BicyclingLayerF autoUpdate />
       </GoogleMap>
     </div>
   );

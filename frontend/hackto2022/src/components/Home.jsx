@@ -4,6 +4,7 @@ function Home() {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyCECygLsxYj2gL2V6h-mF5JpBkADhhyRPY",
+    libraries: ["places"],
   });
 
   return isLoaded ? <Map /> : <>loading...</>;

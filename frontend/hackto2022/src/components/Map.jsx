@@ -1,9 +1,11 @@
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { GoogleMap, Marker, BicyclingLayerF } from "@react-google-maps/api";
+
 import Sidebar from "./Sidebar";
 import DataService from "../services/data.service.js";
-import { useEffect } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
+import { CgDanger } from "react-icons/cg";
+
 const containerStyle = {
   width: "100vw",
   height: "100vh",
@@ -11,7 +13,7 @@ const containerStyle = {
 
 export default function Map() {
   const [map, setMap] = useState(null);
-  const [coord, setCoord] = useState({ lat: 30, lng: -70 });
+  const [coord, setCoord] = useState({ lat: 50, lng: -70 });
   const [currentMarker, setCurrentMarker] = useState(null);
   const [targetMarker, setTargetMarker] = useState(null);
   const [fetching, setFetching] = useState(false);
@@ -65,7 +67,6 @@ export default function Map() {
   }, []);
 
   console.log(blackPoint);
-
   return (
     <div>
       <MenuIcon onClick={() => setMenuOpen(!menuOpen)} />
@@ -92,18 +93,19 @@ export default function Map() {
               <div>{loca.latitude}</div>
               <Marker
                 key={index}
+                icon={{
+                  path: "M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z",
+                  fillColor: "red",
+                  fillOpacity: 0.7,
+                  salce: 0.5,
+                  strokeColor: "red",
+                }}
                 position={{ lng: loca.latitude, lat: loca.longitude }}
               />
             </>
           ))}
         <BicyclingLayerF autocomplete />
       </GoogleMap>
-      {blackPoint &&
-        blackPoint.map((loca, index) => (
-          <>
-            <div>{loca.latitude}</div>
-          </>
-        ))}
     </div>
   );
 }

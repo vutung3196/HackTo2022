@@ -36,3 +36,10 @@
     transform: rotate(360deg);
   }
 }
+
+.test {
+  color: blue;
+}
+.marker:hover {
+  z-index: 1;
+}
